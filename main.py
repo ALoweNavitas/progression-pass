@@ -19,13 +19,12 @@ os.chdir(os.getcwd())
 dir = os.getcwd()
 
 # Variables
-amrData = os.environ.get('amrDatabase')
-progresspassDB = os.environ.get('progresspassDB')
-keysJSON = os.environ.get('keysJSON')
+amrData = ''
+progresspassDB = ''
+keysJSON = ''
 
 # SQL Databases
 amrDatabase = connect(amrData)
-passDB = connect(progresspassDB)
 
 #  Google sheets setup
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -107,7 +106,6 @@ sheet = service.spreadsheets()
 data = dfMerge.values.tolist()
 def update():
     sheet.values().update(spreadsheetId=progressionsheet, range="Upload!A2", valueInputOption="USER_ENTERED", body={"values":data}).execute()
-    df.to_sql('analysis', con=passDB, if_exists='replace') # Add to SQL database
 
 for i in trange(1, file=sys.stdout, desc='Uploading data'):
     try:
